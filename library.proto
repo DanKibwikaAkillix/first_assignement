@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package book;
+
+service BookService {
+
+  rpc AddBook(Book) returns (BookId) {}
+  
+  rpc UpdateBook(Book) returns (google.protobuf.BoolValue) {}  
+
+  rpc RemoveBook(BookId) returns (BookList) {}
+
+  rpc ListAvailableBooks(google.protobuf.Empty) returns (stream Book) {}
+
+  rpc LocateBook(BookId) returns (BookLocation) {}
+
+  rpc BorrowBook(BorrowRequest) returns (BorrowResponse) {}
+
+}
+
+message Book {
+  string title = 1;
+  string author = 2;
+  string isbn = 3;
+  bool available = 4; 
+}
+
+message BookId {
+  int32 id = 1;  
+}
+
+message BookList {
+  repeated Book books = 1;
+}
+
+message BookLocation {
+  string location = 1;
+}
+
+message BorrowRequest {
+  int32 student_id = 1;
+  string isbn = 2;  
+}
+
+message BorrowResponse {
+  bool success = 1;
+}
