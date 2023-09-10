@@ -1,0 +1,48 @@
+import ballerina/grpc;
+import ballerina/log;
+import library.proto;
+
+// Assuming library.proto defines the service
+// consist of a stub//
+const string ROOT_DESCRIPTOR = "library.BookService"; 
+map<string> descriptorMap = {
+  "library.BookService": ROOT_DESCRIPTOR
+};
+
+@grpc:ServiceDescriptor {
+  descriptor: ROOT_DESCRIPTOR,
+  descMap descriptorMap
+}
+service "BookService" on new grpc:Listener(9090) {
+
+  remote function AddBook(Book request) returns BookId|error {
+
+    if (bookExists(request.isbn)) {
+      return error("Book already exists!");
+    }
+
+    var bookId = addBookToLibrary(request);
+    if (bookId is error) {
+      return bookId;
+    }
+
+    BookId response = {id: bookId};
+    return response;
+
+  }
+
+}
+
+// Utility function implementations
+function bookExists(string isbn) returns boolean {
+  // Check if book exists
+  return false; 
+}
+
+function addBookToLibrary(Book book) returns int|error {
+  // Logic to add book
+  return 5;
+}
+
+// Similarly implement other utils like updateBook, 
+// removeBook, getAvailability etc.
