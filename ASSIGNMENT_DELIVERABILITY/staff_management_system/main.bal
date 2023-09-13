@@ -1,5 +1,3 @@
-
-
 import ballerina/http;
 
 public type StaffEntry record {|
