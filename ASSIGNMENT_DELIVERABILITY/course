@@ -3,16 +3,8 @@ function to be executed :
 
  get , put, add, delete course with the following information {
 
-        >> staff_name,
-        >> staff_number, 
-        >> office_number,
-        >> title,
-
-        >> list_of_course {
-
-                > course_name,
-                > course_code,
-                > NQF
-        }
+        >> courseName,
+        >> corseCode, 
+        >> nqf
 
  }
