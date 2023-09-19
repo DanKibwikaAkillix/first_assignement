@@ -81,8 +81,8 @@ service /courseMangement/course on new http:Listener(9000) {
         return courseEntries;
     }
 }
-resource function delete course(string courseCode) returns http:Response {
-    courseEntry.delete(courseCode);
+resource function remove course(string courseCode) returns http:Response {
+    courseEntry.remove(courseCode);
 }
 
 }
