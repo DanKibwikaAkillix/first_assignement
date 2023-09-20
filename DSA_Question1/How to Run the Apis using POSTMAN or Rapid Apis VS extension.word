@@ -1,0 +1,70 @@
+1. POST Request:
+To add a new lecturer using a POST request, follow these steps in Postman:
+
+Open Postman and create a new request.
+Set the request method to "POST."
+Enter the URL for your API endpoint, e.g., http://localhost:9000/staff.
+In the "Headers" section, add a header with the key "Content-Type" and value "application/json" to specify that you are sending JSON data.
+In the "Body" section, select "raw" and enter your JSON payload. For example:
+json
+Copy code
+[
+    {
+        "staff_number": "23DEU",
+        "office_number": "2234",
+        "staff_name": "Mr. Andrew",
+        "title": "HoD",
+        "Course": ["MATH"]
+    }
+]
+Click the "Send" button to make the POST request to add a new lecturer.
+
+
+
+2. GET Request:
+To retrieve a list of all lecturers within the faculty using a GET request, follow these steps:
+
+Create a new request in Postman.
+Set the request method to "GET."
+Enter the URL for the GET endpoint, e.g., http://localhost:9000/staff.
+Click the "Send" button to make the GET request.
+
+
+
+
+3. PUT Request:
+To update an existing lecturer's information using a PUT request, follow these steps:
+
+Create a new request in Postman.
+Set the request method to "PUT."
+Enter the URL for the PUT endpoint, e.g., http://localhost:9000/staff/23DEU, where 23DEU is the staff_number you want to update.
+In the "Headers" section, add a header with the key "Content-Type" and value "application/json" to specify that you are sending JSON data.
+In the "Body" section, select "raw" and enter your JSON payload with the updated information. For example:
+json
+Copy code
+{
+    "office_number": "2255",
+    "staff_name": "Mr. Andrew Updated",
+    "title": "Professor",
+    "Course": ["MATH", "PHY"]
+}
+Click the "Send" button to make the PUT request to update the lecturer's information.
+
+
+
+4. DELETE Request:
+To delete a lecturer's record using a DELETE request, follow these steps:
+
+Create a new request in Postman.
+Set the request method to "DELETE."
+Enter the URL for the DELETE endpoint, e.g., http://localhost:9000/staff/23DEU, where 23DEU is the staff_number you want to delete.
+Click the "Send" button to make the DELETE request to delete the lecturer's record.
+These steps should allow you to test your RESTful API for staff management using Postman with different HTTP methods.
+
+
+header example : 
+
+Header:
+
+Key: Content-Type
+Value: application/json
