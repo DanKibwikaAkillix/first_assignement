@@ -1,6 +1,6 @@
 [package]
 org = "takuc"
-name = "serverservice"
+name = "clientservice"
 version = "0.1.0"
 distribution = "2201.7.0"
 
