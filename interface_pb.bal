@@ -371,6 +371,134 @@ public client class CreateUsersStreamingClient {
     }
 }
 
+public client class LibraryMessageCaller {
+    private grpc:Caller caller;
+
+    public isolated function init(grpc:Caller caller) {
+        self.caller = caller;
+    }
+
+    public isolated function getId() returns int {
+        return self.caller.getId();
+    }
+
+    isolated remote function sendMessage(Message response) returns grpc:Error? {
+        return self.caller->send(response);
+    }
+
+    isolated remote function sendContextMessage(ContextMessage response) returns grpc:Error? {
+        return self.caller->send(response);
+    }
+
+    isolated remote function sendError(grpc:Error response) returns grpc:Error? {
+        return self.caller->sendError(response);
+    }
+
+    isolated remote function complete() returns grpc:Error? {
+        return self.caller->complete();
+    }
+
+    public isolated function isCancelled() returns boolean {
+        return self.caller.isCancelled();
+    }
+}
+
+public client class LibraryListOfBooksCaller {
+    private grpc:Caller caller;
+
+    public isolated function init(grpc:Caller caller) {
+        self.caller = caller;
+    }
+
+    public isolated function getId() returns int {
+        return self.caller.getId();
+    }
+
+    isolated remote function sendListOfBooks(ListOfBooks response) returns grpc:Error? {
+        return self.caller->send(response);
+    }
+
+    isolated remote function sendContextListOfBooks(ContextListOfBooks response) returns grpc:Error? {
+        return self.caller->send(response);
+    }
+
+    isolated remote function sendError(grpc:Error response) returns grpc:Error? {
+        return self.caller->sendError(response);
+    }
+
+    isolated remote function complete() returns grpc:Error? {
+        return self.caller->complete();
+    }
+
+    public isolated function isCancelled() returns boolean {
+        return self.caller.isCancelled();
+    }
+}
+
+public client class LibraryISBNCaller {
+    private grpc:Caller caller;
+
+    public isolated function init(grpc:Caller caller) {
+        self.caller = caller;
+    }
+
+    public isolated function getId() returns int {
+        return self.caller.getId();
+    }
+
+    isolated remote function sendISBN(ISBN response) returns grpc:Error? {
+        return self.caller->send(response);
+    }
+
+    isolated remote function sendContextISBN(ContextISBN response) returns grpc:Error? {
+        return self.caller->send(response);
+    }
+
+    isolated remote function sendError(grpc:Error response) returns grpc:Error? {
+        return self.caller->sendError(response);
+    }
+
+    isolated remote function complete() returns grpc:Error? {
+        return self.caller->complete();
+    }
+
+    public isolated function isCancelled() returns boolean {
+        return self.caller.isCancelled();
+    }
+}
+
+public client class LibraryBookEnquiryResponseCaller {
+    private grpc:Caller caller;
+
+    public isolated function init(grpc:Caller caller) {
+        self.caller = caller;
+    }
+
+    public isolated function getId() returns int {
+        return self.caller.getId();
+    }
+
+    isolated remote function sendBookEnquiryResponse(BookEnquiryResponse response) returns grpc:Error? {
+        return self.caller->send(response);
+    }
+
+    isolated remote function sendContextBookEnquiryResponse(ContextBookEnquiryResponse response) returns grpc:Error? {
+        return self.caller->send(response);
+    }
+
+    isolated remote function sendError(grpc:Error response) returns grpc:Error? {
+        return self.caller->sendError(response);
+    }
+
+    isolated remote function complete() returns grpc:Error? {
+        return self.caller->complete();
+    }
+
+    public isolated function isCancelled() returns boolean {
+        return self.caller.isCancelled();
+    }
+}
+
 public type ContextUserStream record {|
     stream<User, error?> content;
     map<string|string[]> headers;
@@ -422,7 +550,7 @@ public type Empty record {|
 
 @protobuf:Descriptor {value: INTERFACE_DESC}
 public type User record {|
-    string user_id = "";
+    readonly string user_id = "";
     string full_name = "";
     User_Role role = STUDENT;
 |};
@@ -449,7 +577,7 @@ public type BookEnquiryResponse record {|
 
 @protobuf:Descriptor {value: INTERFACE_DESC}
 public type Book record {|
-    string isbn = "";
+    readonly string isbn = "";
     string title = "";
     string author1 = "";
     string author2 = "";

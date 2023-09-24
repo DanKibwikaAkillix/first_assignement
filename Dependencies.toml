@@ -257,7 +257,7 @@ modules = [
 
 [[package]]
 org = "takuc"
-name = "clientservice"
+name = "serverservice"
 version = "0.1.0"
 dependencies = [
 	{org = "ballerina", name = "grpc"},
@@ -266,6 +266,6 @@ dependencies = [
 	{org = "ballerinai", name = "observe"}
 ]
 modules = [
-	{org = "takuc", packageName = "clientservice", moduleName = "clientservice"}
+	{org = "takuc", packageName = "serverservice", moduleName = "serverservice"}
 ]
 
