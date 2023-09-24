@@ -1,0 +1,311 @@
+openapi: "3.0.3"
+
+info:
+  title: Staff Management System
+  description: >
+    API for effectively managing staff, their offices, and allocated 
+    courses within the Faculty of Computing and Informatics.
+  version: 1.0-beta
+  contact:
+    name: Vatiraije Ujava
+    email: vujava@gmail.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+
+
+servers:
+  - url: http://localhost:8080/
+    description: Local development server
+
+
+
+paths:  
+  /newlecturer:
+    post:
+      summary: Creates a new lecturer
+      description: Gets a new lecturer object and registers it to the System
+      operationId: createNewLecturer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lecturer'
+      responses:
+        '201':
+          description: successfull registration
+          content:
+            application/json:
+              schema:
+                properties:
+                  userid:
+                    type: string
+                    description: the staff_number of the registered lecturer
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        default:
+          $ref: '#/components/responses/InternalError'
+  
+  /lecturers:
+    get:
+      summary: Fetches all lecturers
+      description: The server returns a list of all the lecturers currently registered on the System
+      operationId: getLecturers
+      responses:
+        '200':
+          description: List of students
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lecturer'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          description: Any Response
+          $ref: '#/components/responses/InternalError'
+
+  /updatelecturerdetails:
+    put:
+      summary: Updates an existing lecturer details
+      description: updates details for the lecturer with which the identifier passed with the body, points to
+      operationId: updateLecturerDetails
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lecturer'
+      responses:
+        '200':
+          $ref: '#/components/responses/OperationSuccessful'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/InternalError'
+
+  /lecturerbystaffnumber/{staff_number}:
+    parameters:
+      - $ref: '#/components/parameters/staff_number'
+    get:
+      description: Server returns the lecturer with which the staff_number passed in identifies.
+      operationId: getLecturerByStaffNumber
+      responses:
+        '200':
+          description: Operation successfull
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lecturer'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/InternalError'
+
+  /deletelecturer/{staff_number}:
+    parameters:
+      - $ref: '#/components/parameters/staff_number'
+    delete:
+      summary: Deletes an existing lecturer
+      description: >
+        Deletes the lecturer identified by the staff_number passed in 
+        as an argument. This completely removes the lecturer from the system
+      operationId: deleteLecturer
+      responses:
+        '204':
+          description: User deletion successfull
+          $ref: '#/components/responses/OperationSuccessful'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/InternalError'
+  
+  /lecturersbycoursecode/{course_code}:
+    parameters:
+      - $ref: '#/components/parameters/course_code'
+    get:
+      description: >
+        Server returns a list of all the lecturers that teach 
+        the course identified by the passed in course code
+      responses:
+        '200':
+          description: Successfully returned list of lecturers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lecturer'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/InternalError'
+  
+  /lecturersbyofficenumber/{office_number}:
+    parameters:
+      - $ref: '#/components/parameters/office_number'
+    get:
+      description: >
+        Server returns a list of all the lecturers that are located
+        at the office identified by the passed in office number
+      responses:
+        '200':
+          description: Successfully returned list of lecturers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lecturer'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        default:
+          $ref: '#/components/responses/InternalError'
+    
+components:
+  schemas:
+    Lecturer:
+      type: object
+      required:
+        - staff_number
+        - full_name
+      properties:
+        staff_number:
+          type: string
+          description: uniquely identifies a lecturer
+          uniqueItems: true
+          readOnly: true
+        full_name:
+          type: string
+          description: first and last names of the student
+          example: Shibetoshi Nakamoto
+        office_number:
+          type: string
+          description: the number of the office they are located
+          example: A12
+        list_of_courses:
+          type: array
+          description: A list of course codes that the lecturer teaches
+          items:
+            type: string
+
+    Course:
+      type: object
+      required:
+        - course_code
+      properties:
+        course_code:
+          type: string
+          example: DSA621
+          description: Course code of the course
+        course_name:
+          type: string
+          example: Distributed Systems and Applications
+          description: Name of the course
+        nqf_level:
+          type: integer
+          example: 7
+          description: NQF level of the course
+
+    Office:
+      type: object
+      required:
+        - office_number
+      properties:
+        office_number:
+          type: string
+          example: A12
+          description: the office number that identifies the office
+        list_of_staff_numbers:
+          type: array
+          description: A list of staff numbers of all the lecturers that are accomodated by the office
+          items:
+            type: string
+
+    Error:
+      type: object
+      required:
+        - type
+        - message
+      properties:
+        type:
+          type: string
+          enum:
+            - BadRequest
+            - OperationSuccessful
+            - NotFound
+            - InternalError
+          default: InternalServerError
+        message:
+          type: string
+
+  parameters:
+    staff_number:
+      in: path
+      name: staff_number
+      description: unique identifier for a lecturer
+      required: true
+      schema:
+        type: string
+      allowReserved: true
+
+    office_number:
+      in: path
+      name: office_number
+      description: unique identifier for a single office
+      required: true
+      schema:
+        type: string
+      allowReserved: true
+
+    course_code:
+      in: path
+      name: course_code
+      description: unique identifier for a single course
+      required: true
+      schema:
+        type: string
+      allowReserved: true
+    
+
+  responses:
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    InternalError:
+      description: Server encountered an error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    OperationSuccessful:
+          description: Operation was successful
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Lecturer'
+                  - $ref: '#/components/schemas/Course'
+
+    BadRequest:
+      description: Bad request. The request parameters are not valid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
