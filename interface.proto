@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+service Library {
+    rpc addBook(Book) returns (ISBN);
+    rpc createUsers(stream User) returns (Message);
+    rpc updateBook(Book) returns (Message);
+    rpc removeBook(ISBN) returns (ListOfBooks);
+    rpc listAvailableBooks(Empty) returns (ListOfBooks);
+    rpc locateBook(ISBN) returns (BookEnquiryResponse);
+    rpc borrowBook(BorrowingInformation) returns (Message);
+
+    rpc listBorrowedBooks(Empty) returns (ListOfBooks);
+    rpc returnBook(BorrowingInformation) returns (Message);
+    rpc searchBookByTitle(Message) returns (ListOfBooks);
+    rpc searchBookByAuthor(Message) returns (ListOfBooks);
+    rpc searchBookByISBN(Message) returns (ListOfBooks);
+}
+
+message Empty {}
+
+message ISBN{
+    string isbn = 1;
+}
+
+message Book{
+    string isbn = 1;
+    string title = 2;
+    string author1 = 3;
+    string author2 = 4;
+    enum Location {
+        A1 = 0;
+        A2 = 1;
+    }
+    Location location = 5;
+    string borrowed_by = 6;
+    bool available = 7;
+}
+
+message User{
+    string user_id = 1;
+    string full_name = 2;
+    enum Role{
+        STUDENT = 0;
+        LIBRARIAN = 1;
+    }
+    Role role = 3;
+}
+
+message Message{
+    string message = 1;
+}
+
+message ListOfBooks{
+    repeated Book books = 1;
+}
+
+message BookEnquiryResponse{
+    bool found = 1;
+    string message = 2;
+}
+
+message BorrowingInformation{
+    string user_id = 1;
+    string isbn = 2;
+}
